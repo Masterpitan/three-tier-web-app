@@ -1,3 +1,4 @@
+require('dotenv').config();
 const transactionService = require('./TransactionService');
 const mysql = require('mysql');
 const express = require('express');
@@ -46,7 +47,7 @@ function createTables() {
         PRIMARY KEY(id)
       );
     `;
-  
+
     db.query(createTableQuery, (err, results) => {
       if (err) {
         console.error('Error creating table:', err);
