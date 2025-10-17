@@ -1,0 +1,74 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+logs
+*.log
+log/
+debug.log
+*.out
+*.err
+
+# Docker
+*.pid
+*.tar
+docker-compose.override.yml
+db_data/
+**/db_data/
+.docker/
+*.env.docker
+
+# MySQL / Database
+*.sql~
+*.sql-journal
+*.db
+*.sqlite3
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+crash.log
+override.tf
+override.tf.json
+terraform.tfvars
+terraform.tfvars.json
+
+# System files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Build artifacts
+dist/
+build/
+coverage/
+.tmp/
+.cache/
+
+# AWS / Cloud credentials
+.aws/
+*.pem
+*.key
+*.crt
+
+# Python (if used for scripting)
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd

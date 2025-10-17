@@ -1,21 +1,24 @@
 services:
   database:
-    image: mysql:8.0
-    command: --default-authentication-plugin=mysql_native_password
+    image: mysql:5.7
+    command: --bind-address=0.0.0.0
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: webappdb
       MYSQL_USER: webapp
       MYSQL_PASSWORD: webapppassword
+      MYSQL_ROOT_HOST: '%'
     ports:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword"]
       timeout: 20s
       retries: 10
+      interval: 10s
+      start_period: 60s
 
   app-tier:
     build: ./application-code/app-tier
@@ -29,6 +32,7 @@ services:
     depends_on:
       database:
         condition: service_healthy
+    restart: unless-stopped
 
   web-tier:
     build: ./application-code/web-tier
