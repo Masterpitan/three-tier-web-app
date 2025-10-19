@@ -17,7 +17,7 @@ The `terraform` directory contains `infra` to create the resources with terrafor
 ## Getting Started
 After a `terraform apply` on the `infra` directory, do these manual changes on the aws console. The instances will be accessed via ssm
 - On the web-tier instance, update `nginx.conf` with the internal loadbalancer dns.
-``` 
+```
  sudo -su ec2-user
  cd ~
  sudo vi /etc/nginx/nginx.conf
@@ -43,5 +43,5 @@ After a `terraform apply` on the `infra` directory, do these manual changes on t
  |  1 | 400.00 | groceries   |
  +----+--------+-------------+
  1 row in set (0.00 sec)
- 
+
 ```

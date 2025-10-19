@@ -1,9 +1,9 @@
 terraform {
   backend "s3" {
-    bucket = "sprigh-three-tier"
+    bucket = "practical-devops-file-state"
     dynamodb_table = "state-lock"
     key = "terraform/infra.tfstate"
-    region = "us-east-1"
-    encrypt = true 
+    region = "us-west-2"
+    encrypt = true
   }
 }

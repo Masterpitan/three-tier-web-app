@@ -38,7 +38,7 @@ resource "aws_lb_target_group" "lb-tg" {
 # Launch Template Resource #
 resource "aws_launch_template" "threetier-LT" {
   name = "app-tier-LT"
-  image_id = "ami-07408728c46b949d6"
+  image_id = "ami-0e1d35993cb249cee"
   instance_type = "t2.micro"
 
   vpc_security_group_ids = [aws_security_group.app_tier_sg.id]
@@ -46,7 +46,7 @@ resource "aws_launch_template" "threetier-LT" {
   block_device_mappings {
     device_name = "/dev/sdf"
     ebs {
-      volume_size = 20      
+      volume_size = 20
       delete_on_termination = true
       volume_type = "gp2" # default is gp2
      }
@@ -75,7 +75,7 @@ resource "aws_autoscaling_group" "threetier-asg" {
   target_group_arns = [aws_lb_target_group.lb-tg.arn]
   health_check_type = "EC2"
   health_check_grace_period = 300
-  
+
 
   launch_template {
     id      = aws_launch_template.threetier-LT.id
@@ -111,18 +111,13 @@ resource "aws_lb_listener" "front_end" {
   protocol          = "HTTP"
 
   default_action {
-    type = "redirect"
-    
-    redirect {
-      port        = "443"
-      protocol    = "HTTPS"
-      status_code = "HTTP_301"
-    }
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.ftend_tg.arn
   }
 }
 
-## HTTPS Listener ##   
-resource "aws_lb_listener" "ssl" {
+## HTTPS Listener ##
+/*resource "aws_lb_listener" "ssl" {
   load_balancer_arn = aws_lb.external_lb.arn
   port              = "443"
   protocol          = "HTTPS"
@@ -133,7 +128,7 @@ resource "aws_lb_listener" "ssl" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.ftend_tg.arn
   }
-}
+}*/
 
 resource "aws_lb_target_group" "ftend_tg" {
   name     = "front-end"
@@ -152,7 +147,7 @@ resource "aws_autoscaling_group" "webtier-LT" {
   desired_capacity          = 1
   target_group_arns          = [aws_lb_target_group.ftend_tg.arn]
   vpc_zone_identifier       = [for subnet in aws_subnet.public-subnet : subnet.id]
-  
+
   launch_template {
     id      = aws_launch_template.webtier-LT.id
     version = "$Latest"
@@ -166,13 +161,13 @@ resource "aws_autoscaling_group" "webtier-LT" {
 #create launch template for web-tier autoscaling group
 resource "aws_launch_template" "webtier-LT" {
   name          = "webtier-LT"
-  image_id      = "ami-07ac9683a146cd5da"
+  image_id      = "ami-0e1d35993cb249cee"
   instance_type = "t2.micro"
-    
+
   block_device_mappings {
     device_name = "/dev/sdf"
     ebs {
-      volume_size = 20      
+      volume_size = 20
       delete_on_termination = true
       volume_type = "gp2" # default is gp2
      }
@@ -198,7 +193,7 @@ resource "aws_launch_template" "webtier-LT" {
 }
 
 # Route 53 Record
-resource "aws_route53_record" "threetier_record" {
+/*resource "aws_route53_record" "threetier_record" {
   name    = "threetier.sprigsh.click"
   type    = "A"
   zone_id = "Z09957423LTZIVVQNUU69"
@@ -207,6 +202,4 @@ resource "aws_route53_record" "threetier_record" {
     zone_id                = aws_lb.external_lb.zone_id
     evaluate_target_health = true
   }
-}
-
-
+}*/
